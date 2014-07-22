@@ -31,7 +31,7 @@ $('body').delegate('.worry', 'click', function(e) {
 var createWorryNode = function(id, data) {
   return $('<div/>', {
     id: id,
-    class: 'worry col-xs-6',
+    class: 'worry',
     style: 'background-image: url(' + data.url + ')'
   }).append($('<h1/>', { class: "v-center" }).html(data.title));
 };
