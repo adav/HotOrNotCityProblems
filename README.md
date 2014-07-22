@@ -12,6 +12,7 @@ Requirements
  - django
  - South
  - Django Rest Framework
+ - NLTK
 
 ---
 
