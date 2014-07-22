@@ -1,6 +1,6 @@
 body {
   text-align: center;
-  max-width: 700px;
+  color: #FFF;
   margin: 20px;
 }
 .left-win #left,
@@ -8,15 +8,41 @@ body {
   background-color: #dff0d8;
 }
 
-.worry-thumbnail {
-  width: 300px;
-  height: 400px;
-  margin: auto;
-}
-
-.worry-image {
+.worry {
   background-size: cover;
   background-position: 50%;
+  height: 100%;
+}
+
+.card {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 100% !important;
+  height: 100%;
+}
+
+.v-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+}
+
+.init-card {
+  background-color: #0769AD;
+  text-shadow: 2px 2px #DDD;
+}
+
+.loading-card {
+  background-color: #000;
+}
+
+.leaving {
+  z-index: 10;
+  transition: top .3s;
+}
+
+.leave {
+  top: -100%;
 }
