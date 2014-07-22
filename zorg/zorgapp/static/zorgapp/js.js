@@ -18,8 +18,9 @@ jQuery.Topic = function( id ) {
 };
 
 
-
-
+var GEO_KEY = 'AIzaSyDv7-R-BYh7D8PksYznVHf7hugSMaXOZlY';
+var GEO_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
+var USER_CITY;
 
 
 
@@ -31,6 +32,7 @@ var STATES = {
   loading: 3
 };
 var STATE = STATES.init;
+var currentBattle;
 
 var battleQueue = [];
 var battleHash = {};
@@ -137,6 +139,7 @@ var showCreateWorryCard = function() {
 };
 
 var showBattleCard = function(data) {
+  currentBattle = data;
   var card = createBattleCard(data);
   showCard(card);
 };
@@ -148,7 +151,23 @@ var showCard = function(card) {
   cards.addClass('leave');
 };
 
-var sendResults = function(data) {
+var sendResults = function() {
+  var winningId;
+  var losingId;
+  if (STATE == STATES.leftWin) {
+    winningTopic = currentBattle[0];
+    losingTopic = currentBattle[1];
+  } else {
+    winningTopic = currentBattle[1];
+    losingTopic = currentBattle[0];
+  }
+  
+  $.post(getUrl('battle/'), {
+    winning_topic: winningTopic.id,
+    losing_topic: losingTopic.id,
+    city: USER_CITY,
+    user: USER_ID
+  });
 };
 
 var getUrl = function(path) {
@@ -222,8 +241,23 @@ var hasMoreBattles = function() {
   }
 };
 
+var getUserLocation = function(position) {
+  var latlng = position.coords.latitude + ',' + position.coords.longitude;
+  $.getJSON(GEO_URL, {
+    key: GEO_KEY,
+    result_type: 'administrative_area_level_3',
+    latlng: latlng
+  }, function(data) {
+    if (data.results.length) {
+      var city = data.results[0].address_components[0];
+      USER_CITY = city;
+    }
+  });
+};
+
 (function init() {
   showInitCard();
+  navigator.geolocation.getCurrentPosition(getUserLocation)
   
   $.Topic('addBattles').subscribe(hasMoreBattles);
 })();
