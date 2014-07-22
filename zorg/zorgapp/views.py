@@ -35,8 +35,8 @@ class TopicView(APIView):
         name = get_topic_name(request.DATA['text'])
         
         #TODO Fetch Image URL for name
-        url = images.get_url(name)
-        topic = Topic(name=name,hits=0,views=0,img_url=url)
+        #url = images.get_url(name)
+        topic = Topic(name=name,hits=0,views=0,img_url='')
         
         #TODO Have duplicates return gracefully (hits++, views++ or something)
         topic.save()
