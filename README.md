@@ -11,6 +11,7 @@ Requirements
  - pip
  - django
  - South
+ - Django Rest Framework
 
 ---
 
