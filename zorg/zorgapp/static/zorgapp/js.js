@@ -1,9 +1,36 @@
+var topics = {};
+
+jQuery.Topic = function( id ) {
+    var callbacks,
+        topic = id && topics[ id ];
+    if ( !topic ) {
+        callbacks = jQuery.Callbacks();
+        topic = {
+            publish: callbacks.fire,
+            subscribe: callbacks.add,
+            unsubscribe: callbacks.remove
+        };
+        if ( id ) {
+            topics[ id ] = topic;
+        }
+    }
+    return topic;
+};
+
+
+
+
+
+
+
+
 var STATES = {
   init: 0,
   leftWin: 1,
   rightWin: 2,
   loading: 3
 };
+var STATE = STATES.init;
 
 var battleQueue = [];
 var battleHash = {};
@@ -17,6 +44,7 @@ var clearState = function() {
 };
 
 var setState = function(state) {
+  STATE = state;
   clearState();
   $('body').addClass(STATE_CLASSES[state]);
 };
@@ -33,8 +61,8 @@ var createWorryNode = function(id, data) {
   return $('<div/>', {
     id: id,
     class: 'worry',
-    style: 'background-image: url(' + data.url + ')'
-  }).append($('<h1/>', { class: "v-center" }).html(data.title));
+    style: 'background-image: url(' + data.img_url + ')'
+  }).append($('<h1/>', { class: "v-center worry-text" }).html(data.name));
 };
 
 var receiveBattle = function(data) {
@@ -49,9 +77,9 @@ var createCard = function(content, className) {
 
 var createBattleCard = function(data) {
   var node = createCard();
-  var left = createWorryNode('left', data.left);
+  var left = createWorryNode('left', data[0]);
   node.append(left);
-  var right = createWorryNode('right', data.right);
+  var right = createWorryNode('right', data[1]);
   node.append(right);
   return node;
 };
@@ -114,18 +142,21 @@ var getUrl = function(path) {
   return '/' + path;
 };
 
-var addBattles = function(battles) {
-  battles.forEach(function(battle) {
+var addBattles = function(topics) {
+  var len = topics.length;
+  for (var i = 0; i < len / 2; i++) {
+    var battle = [topics[i], topics[len - 1 - i]];
     if (isUniqueBattle(battle)) {
       addBattle(battle);
     }
-  });
+  }
+  $.Topic('addBattles').publish();
 };
 
 var addBattle = function(battle) {
   var key = getKey(battle);
   battleHash[key] = true;
-  queue.push(battle);
+  battleQueue.push(battle);
 };
 
 var getKey = function(battle) {
@@ -148,22 +179,30 @@ var fetchBattles = function() {
 };
 
 var showNextBattle = function() {
-  if (!queue.length) {
+  if (!battleQueue.length) {
     showLoadingCard();
   } else {
-    showBattleCard(queue.shift());
+    var battle = battleQueue.shift();
+    showBattleCard(battle);
+  }
+  
+  if (battleQueue.length < 3) {
+    fetchBattles();
   }
 };
 
-var sampleData = {
-  left: {
-    title: 'Botfly',
-    url: "http://www.wired.com/images_blogs/wiredscience/2013/10/human-bot-fly-3rd-instar-Buss.jpg"
-  },
-  right: {
-    title: 'Tornado',
-    url: "http://tornado-facts.com/wp-content/uploads/2009/07/lighting-and-tornado-storm.jpg"
+var isWaitingState = function(state) {
+  return state == STATES.loading || state == STATES.init;
+}
+
+var hasMoreBattles = function() {
+  if (isWaitingState(STATE)) {
+    showNextBattle();
   }
 };
 
-showInitCard();
+(function init() {
+  showInitCard();
+  
+  $.Topic('addBattles').subscribe(hasMoreBattles);
+})();
