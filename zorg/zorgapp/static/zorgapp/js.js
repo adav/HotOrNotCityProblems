@@ -131,6 +131,10 @@ var showCreateWorryCard = function() {
   
   node.submit(function(e) {
     e.preventDefault();
+    var value = $(this.elements[0]).val();
+    $.post(getUrl('topic/'), {
+      text: value
+    });
     showNextCard();
   });
   
