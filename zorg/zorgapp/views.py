@@ -7,16 +7,8 @@ from rest_framework import mixins, generics
 
 class TopicView(APIView):
     def get(self, request):
-        # TODO Pick two random ones
-        b1 = Topic()
-        b1.name = 'avi nimni'
-        b1.img_url = 'http://example.com/img1.png'
-        
-        b2 = Topic()
-        b2.name = 'avi bimi'
-        b2.img_url = 'http://example.com/img2.png'
-        
-        topics = [b1, b2]
+
+        topics = Topic.objects.order_by('?')[0:2]
         
         serializer = TopicSerializer(topics, many=True)
         return Response(serializer.data)
