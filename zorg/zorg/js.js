@@ -5,6 +5,8 @@ var STATES = {
   loading: 3
 };
 
+var queue = [];
+
 var STATE_CLASSES = [];
 STATE_CLASSES[STATES.leftWin] = 'left-win';
 STATE_CLASSES[STATES.rightWin] = 'right-win';
@@ -20,7 +22,10 @@ var setState = function(state) {
 
 $('body').delegate('.worry', 'click', function(e) {
   var state = this.id == 'left' ? STATES.leftWin : STATES.rightWin;
+  $(this).addClass('win');
   setState(state);
+  sendResults();
+  showNextBattle();
 });
 
 var createWorryNode = function(id, data) {
@@ -51,6 +56,7 @@ var createBattleCard = function(data) {
 };
 
 var showInitCard = function() {
+  setState(STATES.init);
   var node = createCard(
     $('<h1/>', { class: "v-center" }).html('Zorg'),
     'init-card');
@@ -58,6 +64,7 @@ var showInitCard = function() {
 };
 
 var showLoadingCard = function() {
+  setState(STATES.loading);
   var node = createCard(
     $('<h1/>', { class: "v-center" }).html('Loading'),
     'loading-card');
@@ -82,6 +89,12 @@ var sendResults = function(data) {
 var fetchBattle = function() {
 };
 
+var showNextBattle = function() {
+  if (!queue.length) {
+    showLoadingCard();
+  }
+};
+
 var sampleData = {
   left: {
     title: 'Botfly',
@@ -92,3 +105,6 @@ var sampleData = {
     url: "http://tornado-facts.com/wp-content/uploads/2009/07/lighting-and-tornado-storm.jpg"
   }
 };
+
+showInitCard();
+window.setTimeout(function() {showBattleCard(sampleData)}, 800);
