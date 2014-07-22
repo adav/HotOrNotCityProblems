@@ -3,18 +3,21 @@ body {
   color: #FFF;
   margin: 20px;
 }
-.left-win #left,
-.right-win #right {
-  background-color: #dff0d8;
+
+.worry.win {
+  opacity: 1;
 }
 
 .worry {
   background-size: cover;
   background-position: 50%;
   height: 100%;
+  opacity: .5;
+  transition: opacity .3s;
 }
 
 .card {
+  background-color: white;
   position: absolute;
   top: 0;
   left: 0;
@@ -40,7 +43,7 @@ body {
 
 .leaving {
   z-index: 10;
-  transition: top .3s;
+  transition: top .3s .3s;
 }
 
 .leave {
