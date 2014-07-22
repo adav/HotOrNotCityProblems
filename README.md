@@ -13,6 +13,7 @@ Requirements
  - South
  - Django Rest Framework
  - NLTK
+ - flickrapi
 
 ---
 
