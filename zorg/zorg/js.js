@@ -1,3 +1,5 @@
+var BASE = 'http://zorg-itc.herokuapp.com/';
+
 var STATES = {
   init: 0,
   leftWin: 1,
@@ -5,7 +7,8 @@ var STATES = {
   loading: 3
 };
 
-var queue = [];
+var battleQueue = [];
+var battleHash = {};
 
 var STATE_CLASSES = [];
 STATE_CLASSES[STATES.leftWin] = 'left-win';
@@ -61,6 +64,7 @@ var showInitCard = function() {
     $('<h1/>', { class: "v-center" }).html('Zorg'),
     'init-card');
   showCard(node);
+  fetchBattles();
 };
 
 var showLoadingCard = function() {
@@ -72,6 +76,25 @@ var showLoadingCard = function() {
     }),
     'loading-card');
   showCard(node);
+};
+
+var showCreateWorryCard = function() {
+  var node = $('<form/>', {
+    class: 'v-center create-card-inner'
+  });
+  node.append($('<h1/>').html('Tell me your problems'));
+  node.append($('<input/>', {
+    type: 'text',
+    class: 'form-control',
+    placeholder: 'example: poop on the sidewalk'
+  }));
+  node.append($('<button/>', {
+    type: 'submit',
+    class: 'btn btn-primary'
+  }).html('Go'));
+  
+  var card = createCard(node, 'create-card');
+  showCard(card);
 };
 
 var showBattleCard = function(data) {
@@ -89,12 +112,48 @@ var showCard = function(card) {
 var sendResults = function(data) {
 };
 
-var fetchBattle = function() {
+var getUrl = function(path) {
+  return BASE + path;
+};
+
+var addBattles = function(battles) {
+  battles.forEach(function(battle) {
+    if (isUniqueBattle(battle)) {
+      addBattle(battle);
+    }
+  });
+};
+
+var addBattle = function(battle) {
+  var key = getKey(battle);
+  battleHash[key] = true;
+  queue.push(battle);
+};
+
+var getKey = function(battle) {
+  if (battle[0].name > battle[1].name) {
+    return battle[0].id + battle[1].id;
+  } else {
+   return battle[1].id + battle[0].id;
+  }
+};
+
+var isUniqueBattle = function(battle) {
+  var key = getKey(battle);
+  return !battleHash[key];
+};
+
+var fetchBattles = function() {
+  $.getJSON(getUrl('topic'), function(data) {
+    addBattles(data);
+  });
 };
 
 var showNextBattle = function() {
   if (!queue.length) {
     showLoadingCard();
+  } else {
+    showBattleCard(queue.shift());
   }
 };
 
@@ -110,4 +169,3 @@ var sampleData = {
 };
 
 showInitCard();
-window.setTimeout(function() {showBattleCard(sampleData)}, 800);
