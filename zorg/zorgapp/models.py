@@ -1,0 +1,19 @@
+from django.db import models
+
+class User(models.Model):
+	user_id = models.IntegerField(primary_key=True)
+	last_location_lat = models.DecimalField(max_digits=9,decimal_places=6)
+	last_location_long = models.DecimalField(max_digits=9,decimal_places=6)
+	
+class Topic(models.Model):
+	name = models.CharField(max_length=255, unique=True)
+	img_url = models.URLField()
+	hits = models.IntegerField()
+	views = models.IntegerField()
+
+class Battle(models.Model):
+	winning_topic = models.ForeignKey('Topic', related_name = 'Battle_Topic_Winner')
+	losing_topic = models.ForeignKey('Topic', related_name = 'Battle_Topic_Loser')
+	location_lat = models.DecimalField(max_digits=9,decimal_places=6)
+	location_long = models.DecimalField(max_digits=9,decimal_places=6)
+	user = models.ForeignKey('User')
