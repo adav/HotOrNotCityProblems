@@ -5,6 +5,15 @@ Zorg. A fun game to find out the worries of a city.
 
 ---
 
+Requirements
+
+ - python
+ - pip
+ - django
+ - South
+
+---
+
 To run:
 
  - Use the `git` `bash` tool.
