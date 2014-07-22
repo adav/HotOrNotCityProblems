@@ -1,11 +1,39 @@
+var topics = {};
+
+jQuery.Topic = function( id ) {
+    var callbacks,
+        topic = id && topics[ id ];
+    if ( !topic ) {
+        callbacks = jQuery.Callbacks();
+        topic = {
+            publish: callbacks.fire,
+            subscribe: callbacks.add,
+            unsubscribe: callbacks.remove
+        };
+        if ( id ) {
+            topics[ id ] = topic;
+        }
+    }
+    return topic;
+};
+
+
+
+
+
+
+
+
 var STATES = {
   init: 0,
   leftWin: 1,
   rightWin: 2,
   loading: 3
 };
+var STATE = STATES.init;
 
-var queue = [];
+var battleQueue = [];
+var battleHash = {};
 
 var STATE_CLASSES = [];
 STATE_CLASSES[STATES.leftWin] = 'left-win';
@@ -16,6 +44,7 @@ var clearState = function() {
 };
 
 var setState = function(state) {
+  STATE = state;
   clearState();
   $('body').addClass(STATE_CLASSES[state]);
 };
@@ -25,15 +54,19 @@ $('body').delegate('.worry', 'click', function(e) {
   $(this).addClass('win');
   setState(state);
   sendResults();
-  showNextBattle();
+  showNextCard();
 });
 
 var createWorryNode = function(id, data) {
   return $('<div/>', {
     id: id,
     class: 'worry',
-    style: 'background-image: url(' + data.url + ')'
-  }).append($('<h1/>', { class: "v-center" }).html(data.title));
+    style: 'background-image: url(' + data.img_url + ')'
+  }).append($('<div/>', {
+    class: "worry-text"
+  })).append($('<h1/>', {
+    class: "v-center"
+  }).html(data.name));
 };
 
 var receiveBattle = function(data) {
@@ -48,9 +81,9 @@ var createCard = function(content, className) {
 
 var createBattleCard = function(data) {
   var node = createCard();
-  var left = createWorryNode('left', data.left);
+  var left = createWorryNode('left', data[0]);
   node.append(left);
-  var right = createWorryNode('right', data.right);
+  var right = createWorryNode('right', data[1]);
   node.append(right);
   return node;
 };
@@ -61,9 +94,14 @@ var showInitCard = function() {
     $('<h1/>', { class: "v-center" }).html('Zorg'),
     'init-card');
   showCard(node);
+  fetchBattles();
 };
 
 var showLoadingCard = function() {
+  if (STATE == STATES.loading) {
+    return;
+  }
+  
   setState(STATES.loading);
   var node = createCard(
     $('<img/>', {
@@ -72,6 +110,30 @@ var showLoadingCard = function() {
     }),
     'loading-card');
   showCard(node);
+};
+
+var showCreateWorryCard = function() {
+  var node = $('<form/>', {
+    class: 'v-center create-card-inner'
+  });
+  node.append($('<h1/>').html('Tell me your problems'));
+  node.append($('<input/>', {
+    type: 'text',
+    class: 'form-control',
+    placeholder: 'example: poop on the sidewalk'
+  }));
+  node.append($('<button/>', {
+    type: 'submit',
+    class: 'btn btn-primary'
+  }).html('Go'));
+  
+  node.submit(function(e) {
+    e.preventDefault();
+    showNextCard();
+  });
+  
+  var card = createCard(node, 'create-card');
+  showCard(card);
 };
 
 var showBattleCard = function(data) {
@@ -89,25 +151,79 @@ var showCard = function(card) {
 var sendResults = function(data) {
 };
 
-var fetchBattle = function() {
+var getUrl = function(path) {
+  return '/' + path;
+};
+
+var addBattles = function(topics) {
+  var len = topics.length;
+  for (var i = 0; i < len / 2; i++) {
+    var battle = [topics[i], topics[len - 1 - i]];
+    if (isUniqueBattle(battle)) {
+      addBattle(battle);
+    }
+  }
+  $.Topic('addBattles').publish();
+};
+
+var addBattle = function(battle) {
+  var key = getKey(battle);
+  battleHash[key] = true;
+  battleQueue.push(battle);
+};
+
+var getKey = function(battle) {
+  if (battle[0].name > battle[1].name) {
+    return battle[0].id + battle[1].id;
+  } else {
+   return battle[1].id + battle[0].id;
+  }
+};
+
+var isUniqueBattle = function(battle) {
+  var key = getKey(battle);
+  return !battleHash[key];
+};
+
+var fetchBattles = function() {
+  $.getJSON(getUrl('topic'), function(data) {
+    addBattles(data);
+  });
+};
+
+var showNextCard = function() {
+  if (Math.random() > .1) {
+    showNextBattle();
+  } else {
+    showCreateWorryCard();
+  }
 };
 
 var showNextBattle = function() {
-  if (!queue.length) {
+  if (!battleQueue.length) {
     showLoadingCard();
+  } else {
+    var battle = battleQueue.shift();
+    showBattleCard(battle);
+  }
+  
+  if (battleQueue.length < 3) {
+    fetchBattles();
   }
 };
 
-var sampleData = {
-  left: {
-    title: 'Botfly',
-    url: "http://www.wired.com/images_blogs/wiredscience/2013/10/human-bot-fly-3rd-instar-Buss.jpg"
-  },
-  right: {
-    title: 'Tornado',
-    url: "http://tornado-facts.com/wp-content/uploads/2009/07/lighting-and-tornado-storm.jpg"
+var isWaitingState = function(state) {
+  return state == STATES.loading || state == STATES.init;
+}
+
+var hasMoreBattles = function() {
+  if (isWaitingState(STATE)) {
+    showNextBattle();
   }
 };
 
-showInitCard();
-window.setTimeout(function() {showBattleCard(sampleData)}, 800);
+(function init() {
+  showInitCard();
+  
+  $.Topic('addBattles').subscribe(hasMoreBattles);
+})();

@@ -15,9 +15,14 @@ body {
   background-position: 50%;
   height: 100%;
   transition: left .3s, right .3s;
-  
   cursor: pointer;
   position: absolute;
+}
+
+.worry-text {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(50, 50, 50, .1);
 }
 
 #right{
@@ -53,6 +58,17 @@ body {
 
 .loading-card {
   background-color: #000;
+}
+
+.create-card-inner {
+  color: #000;
+  width: 400px;
+  margin: auto;
+  text-align: left;
+}
+
+.create-card button {
+  margin-top: 10px;
 }
 
 .leaving {
