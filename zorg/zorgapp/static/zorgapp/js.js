@@ -62,7 +62,11 @@ var createWorryNode = function(id, data) {
     id: id,
     class: 'worry',
     style: 'background-image: url(' + data.img_url + ')'
-  }).append($('<h1/>', { class: "v-center worry-text" }).html(data.name));
+  }).append($('<div/>', {
+    class: "worry-text"
+  })).append($('<h1/>', {
+    class: "v-center"
+  }).html(data.name));
 };
 
 var receiveBattle = function(data) {
