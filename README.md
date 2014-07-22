@@ -12,6 +12,7 @@ Requirements
  - django
  - South
  - Django Rest Framework
+ - NLTK
 
 ---
 
@@ -19,7 +20,8 @@ To run:
 
  - Use the `git` `bash` tool.
  - Change to the `zorg` directory.
- - Type `./manage.py runserver` (Or `python2 manage.py runserver` if on a Mac with Python installed by Homebrew)
+ - *LOCAL:* Type `./manage.py runserver` (Or `python2 manage.py runserver` if on a Mac with Python installed by Homebrew)
  - The project will now be running at `http://localhost:8000`
  
+[HEROKU LINK](http://zorg-itc.herokuapp.com)
  
