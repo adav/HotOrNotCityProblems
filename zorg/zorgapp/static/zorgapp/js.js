@@ -153,6 +153,7 @@ var showCard = function(card) {
   cards.addClass('leaving');
   $('body').append(card);
   cards.addClass('leave');
+  window.setTimeout(function() {cards.remove()}, 1000);
 };
 
 var sendResults = function() {
