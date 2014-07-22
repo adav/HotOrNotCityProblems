@@ -66,7 +66,10 @@ var showInitCard = function() {
 var showLoadingCard = function() {
   setState(STATES.loading);
   var node = createCard(
-    $('<h1/>', { class: "v-center" }).html('Loading'),
+    $('<img/>', {
+      class: 'v-center',
+      src: 'ajax-loader.gif'
+    }),
     'loading-card');
   showCard(node);
 };
