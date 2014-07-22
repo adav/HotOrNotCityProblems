@@ -54,7 +54,7 @@ $('body').delegate('.worry', 'click', function(e) {
   $(this).addClass('win');
   setState(state);
   sendResults();
-  showNextBattle();
+  showNextCard();
 });
 
 var createWorryNode = function(id, data) {
@@ -94,6 +94,10 @@ var showInitCard = function() {
 };
 
 var showLoadingCard = function() {
+  if (STATE == STATES.loading) {
+    return;
+  }
+  
   setState(STATES.loading);
   var node = createCard(
     $('<img/>', {
@@ -118,6 +122,11 @@ var showCreateWorryCard = function() {
     type: 'submit',
     class: 'btn btn-primary'
   }).html('Go'));
+  
+  node.submit(function(e) {
+    e.preventDefault();
+    showNextCard();
+  });
   
   var card = createCard(node, 'create-card');
   showCard(card);
@@ -176,6 +185,14 @@ var fetchBattles = function() {
   $.getJSON(getUrl('topic'), function(data) {
     addBattles(data);
   });
+};
+
+var showNextCard = function() {
+  if (Math.random() > .1) {
+    showNextBattle();
+  } else {
+    showCreateWorryCard();
+  }
 };
 
 var showNextBattle = function() {
