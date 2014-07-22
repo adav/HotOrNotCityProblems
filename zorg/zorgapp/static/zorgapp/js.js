@@ -249,7 +249,7 @@ var getUserLocation = function(position) {
     latlng: latlng
   }, function(data) {
     if (data.results.length) {
-      var city = data.results[0].address_components[0];
+      var city = data.results[0].address_components[0].long_name;
       USER_CITY = city;
     }
   });
