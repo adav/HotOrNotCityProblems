@@ -1,0 +1,1 @@
+web: python zorg/manage.py runserver
