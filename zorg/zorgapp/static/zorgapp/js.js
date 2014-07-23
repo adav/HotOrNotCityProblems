@@ -83,7 +83,7 @@ $('body').on('contextmenu', function(e) {
 });
 
 $('body').delegate('.analize-city', 'click', function(e) {
-  //showRanking(sampleData);
+  //showRanking(sampleByCity);
   showLoadingCard();
   $.getJSON(getUrl('top'), function(data) {
     showRanking({
