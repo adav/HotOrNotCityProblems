@@ -8,6 +8,7 @@ from django.template import RequestContext, loader
 from django.http import HttpResponse
 from django.db import IntegrityError
 import images
+import json
 
 def get_topic_name(text):
     from nlp import tokenizeWorry
@@ -86,3 +87,28 @@ class TopView(APIView):
         new_topics = sorted(topics, key=lambda x: float(x.hits)/x.views if x.views > thresh_hold_min_views else 0, reverse=True)
         serializer = TopicSerializer(new_topics[0:default_count_top-1], many=True)
         return Response(serializer.data)
+        
+        
+class TopicCompareView(APIView):
+    def post(self, request):
+        left_topic_id = request.DATA['left']
+        right_topic_id = request.DATA['right']
+        
+        left = Topic.objects.filter(pk=left_topic_id)[0]
+        right = Topic.objects.filter(pk=right_topic_id)[0]
+        
+        left_win = Battle.objects.filter(winning_topic=left,losing_topic=right)
+        left_win_count = len(left_win)
+        
+        
+        right_win = Battle.objects.filter(winning_topic=right,losing_topic=left)
+        right_win_count = len(right_win)
+        
+        response_data = {}
+        response_data['right_name'] = right.name
+        response_data['left_name'] = left.name
+        response_data['left_wins'] = left_win_count
+        response_data['right_wins'] = right_win_count
+        response_data['left_img_url'] = left.img_url
+        response_data['right_img_url'] = right.img_url
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
