@@ -583,43 +583,43 @@ var sampleByTopic = {
   title: 'Witches',
   topics: [
     {
-        "name": "King's Landing", 
+        "name": "Salem", 
         "img_url": ""
     },
     {
-        "name": "Tatoonie", 
+        "name": "Emerald City", 
         "img_url": ""
     },
     {
-        "name": "Gotham City", 
+        "name": "Spooktown", 
         "img_url": ""
     },
     {
-        "name": "South Park", 
+        "name": "Middle Earth", 
         "img_url": ""
     },
     {
-        "name": "The Shire", 
+        "name": "Narnia", 
         "img_url": ""
     },
     {
-        "name": "Atlantis", 
+        "name": "Hogwarts", 
         "img_url": ""
     },
     {
-        "name": "Springfield", 
+        "name": "Neverland", 
         "img_url": ""
     },
     {
-        "name": "Bedrock", 
-        "img_url": ""
-    },
-    {
-        "name": "Asgard", 
+        "name": "Ancient Greece", 
         "img_url": ""
     },
     {
         "name": "Tel Aviv", 
+        "img_url": ""
+    },
+    {
+        "name": "King's Landing", 
         "img_url": ""
     }
   ]
