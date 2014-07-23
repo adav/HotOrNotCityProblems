@@ -156,7 +156,10 @@ var showCreateWorryCard = function() {
   node.append($('<button/>', {
     type: 'submit',
     class: 'btn btn-inverse'
-  }).html('No thanks'));
+  }).html('No thanks')
+  .click(function() {
+    node.children("input").val('');
+  }));
   
   node.submit(function(e) {
     e.preventDefault();
