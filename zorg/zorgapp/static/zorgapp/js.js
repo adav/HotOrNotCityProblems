@@ -283,11 +283,30 @@ var fetchBattles = function() {
 var fetchBattlesThrottled = throttle(fetchBattles, 1000);
 
 var showNextCard = function() {
+  showRewardTooltip("lol");
   if (Math.random() > .1) {
     showNextBattle();
   } else {
     showCreateWorryCard();
   }
+};
+
+var showRewardTooltip = function(tooltipMessage) {
+  var tooltip = $('<div/>',
+    {
+      class: "alert alert-info tooltip-andrew",
+      roll: "roll"
+    }).append($('<a/>',
+      {
+        href: "#",
+        class: "alert-link"
+      }).html(tooltipMessage)
+    );
+    $('body').append(tooltip);
+    window.setTimeout(function(){tooltip.addClass('tooltip-move')}, 1000);
+    window.setTimeout(function() {tooltip.addClass('tooltip-vanish')}, 5000);
+    window.setTimeout(function() {tooltip.remove()}, 6000);
+
 };
 
 var showNextBattle = function() {
