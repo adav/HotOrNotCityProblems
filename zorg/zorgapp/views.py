@@ -10,7 +10,10 @@ from django.db import IntegrityError
 import images
 
 def get_topic_name(text):
-    return text
+    from nlp import tokenizeWorry
+    worry = tokenizeWorry(text)
+    print(worry)
+    return worry
     
 def index(request):
     user_id = request.session.get('zorguser')
@@ -24,7 +27,7 @@ def index(request):
     template = loader.get_template('zorgapp/index.html')
     return HttpResponse(template.render(RequestContext(request, {'user_id':user_id})))
     
-
+    
 class TopicView(APIView):
     def get(self, request):
         #TODO filter out battles the user has done before
@@ -35,11 +38,11 @@ class TopicView(APIView):
     def post(self, request):
         name = get_topic_name(request.DATA['text'])
         
-        #TODO Fetch Image URL for name
+        # Fetch Image URL for name
         url = images.get_url(name)
         topic = Topic(name=name,hits=0,views=0,img_url=url)
         
-        #TODO Have duplicates return gracefully (hits++, views++ or something)
+        # Have duplicates return gracefully (hits++, views++ or something)
         stat = status.HTTP_201_CREATED
         try:
             topic.save()
@@ -52,7 +55,8 @@ class TopicView(APIView):
         
         serializer = TopicSerializer(topic)
         return Response(serializer.data, status=stat)
-        
+      
+      
 class BattleView(mixins.CreateModelMixin,
                  generics.GenericAPIView):
 
@@ -60,4 +64,24 @@ class BattleView(mixins.CreateModelMixin,
     serializer_class = BattleSerializer
     
     def post(self, request, *args, **kwargs):
+        winning_id = request.DATA['winning_topic']
+        losing_id = request.DATA['losing_topic']
+        tmp_topic = Topic.objects.get(pk=winning_id)
+        tmp_topic.views = tmp_topic.views + 1
+        tmp_topic.hits = tmp_topic.hits + 1
+        tmp_topic.save()    
+        tmp_topic = Topic.objects.get(pk=losing_id)
+        tmp_topic.views = tmp_topic.views + 1
+        tmp_topic.save()        
         return self.create(request, *args, **kwargs)
+        
+        
+
+default_count_top = 10;
+class TopView(APIView):
+    def get(self, request):
+        #TODO filter out battles the user has done before
+        topics = Topic.objects.all()    
+        new_topics = sorted(topics, key=lambda x: float(x.hits)/x.views if x.views > 0 else 0, reverse=True)
+        serializer = TopicSerializer(new_topics[0:default_count_top-1], many=True)
+        return Response(serializer.data)
