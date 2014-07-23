@@ -74,7 +74,7 @@ h1 {
 
 .create-card-inner {
   color: #000;
-  width: 400px;
+  width: 320px;
   margin: auto;
   text-align: left;
 }
@@ -90,6 +90,7 @@ h1 {
 
 .leave {
   top: -100%;
+  overflow: hidden
 }
 
 .analize-city {
@@ -120,12 +121,6 @@ h1 {
   transform: translate(0, -50%);
 }
 
-.rank:nth-child(odd) {
-  background-color: rgb(210, 210, 210);
-}
-.rank:nth-child(even) {
-  background-color: rgb(150, 150, 150);
-}
 .ranking-title {
   background-color: #5bc0de;
 }
@@ -138,29 +133,45 @@ h1 {
 
 .compare-city {
   position: absolute;
-  left: 50%;
-  -webkit-transform: translate(-50%, 0);
-  transform: translate(-50%, 0);
+  width: 100%;
+  left: 0;
 }
 
+.city-text {
+  display: inline-block;
+}
+
+.city-line {
+  position: absolute;
+  width: 7px;
+  background-color: black;
+}
+
+.compare-city:nth-child(7n+1),
 .rank:nth-child(7n) h1 {
   background-color: rgba(255, 0, 0, .5)
 }
+.compare-city:nth-child(7n+2),
 .rank:nth-child(7n+1) h1 {
   background-color: rgba(255, 127, 0, .5)
 }
+.compare-city:nth-child(7n+3),
 .rank:nth-child(7n+2) h1 {
   background-color: rgba(255, 255, 0, .5)
 }
+.compare-city:nth-child(7n+4),
 .rank:nth-child(7n+3) h1 {
   background-color: rgba(0, 255, 0, .5)
 }
+.compare-city:nth-child(7n+5),
 .rank:nth-child(7n+4) h1 {
   background-color: rgba(0, 0, 255, .5)
 }
+.compare-city:nth-child(7n+6),
 .rank:nth-child(7n+5) h1 {
   background-color: rgba(75, 0, 130, .5)
 }
+.compare-city:nth-child(7n),
 .rank:nth-child(7n+6) h1 {
   background-color: rgba(143, 0, 255, .5)
 }

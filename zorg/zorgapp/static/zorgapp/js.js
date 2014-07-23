@@ -18,6 +18,23 @@ jQuery.Topic = function( id ) {
 };
 
 
+function throttle(func, wait) {
+    var timeout;
+    return function() {
+        var context = this, args = arguments;
+        if (!timeout) {
+            // the first time the event fires, we setup a timer, which 
+            // is used as a guard to block subsequent calls; once the 
+            // timer's handler fires, we reset it and create a new one
+            timeout = setTimeout(function() {
+                timeout = null;
+                func.apply(context, args);
+            }, wait);
+        }
+    }
+}
+
+
 var GEO_KEY = 'AIzaSyDv7-R-BYh7D8PksYznVHf7hugSMaXOZlY';
 var GEO_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
 var USER_CITY;
@@ -234,6 +251,7 @@ var fetchBattles = function() {
     addBattles(data);
   });
 };
+var fetchBattlesThrottled = throttle(fetchBattles, 1000);
 
 var showNextCard = function() {
   if (Math.random() > .1) {
@@ -252,7 +270,7 @@ var showNextBattle = function() {
   }
   
   if (battleQueue.length < 3) {
-    fetchBattles();
+    fetchBattlesThrottled();
   }
 };
 
@@ -312,7 +330,7 @@ var createRank = function(topic, i) {
 };
 
 var showRanking = function(data) {
-  var node = createCard();
+  var node = createCard(undefined, 'ranking-card');
   node.append($('<h1/>', {
     class: 'ranking-title'
   }).html(data.title));
@@ -356,6 +374,7 @@ var createCompare = function(canvas, data, topic, key, left) {
     });
     c.lineTo(startX, num * stepHeight);
     c.closePath();
+    c.lineWidth = 0;
     c.stroke();
     c.clip();
     c.drawImage(img, 0, 0, canvas.width, canvas.height);
@@ -388,17 +407,31 @@ var showCompare = function(data) {
   
   var num = data.comparisons.length;
   var stepHeight = canvas.height / num;
+  var cities = $('<div/>');
+  var lines = $('<div/>');
   data.comparisons.forEach(function(comparison, i) {
     var div = document.createElement('div');
-    div.className = 'compare-city';
-    div.innerHTML = comparison.city;
+    div.className = 'compare-city rank';
+    div.innerHTML = '<div class="compare-text v-center">'+comparison.city+'</div>';
     
     div.style.top = (i * stepHeight) + 'px';
-    div.style.lineHeight = stepHeight + 'px';
     div.style.height = stepHeight + 'px';
     
-    node.append(div);
+    var percent = comparison.topic1_percent;
+    var line = document.createElement('div');
+    line.className = 'city-line';
+    line.style.position = "absolute";
+    line.style.left = (canvas.width * percent) + 'px';
+    line.style.top = (i * stepHeight) + 'px';
+    line.style.height = stepHeight + 'px';
+    line.style.width = '7px';
+    line.style.backgroundColor = 'black';
+    
+    cities.append(div);
+    lines.append(line);
   });
+  node.append(cities);
+  node.append(lines);
   
   showCard(node);
 };

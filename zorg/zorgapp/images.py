@@ -9,7 +9,7 @@ def get_flickr_url(photo):
 
 def get_url(text):
     flickr = flickrapi.FlickrAPI(API_KEY)
-    photos = flickr.walk(text=text,per_page='1',license='1,2,3,4,5,6,7,8',sort='interestingness-desc')
+    photos = flickr.walk(text=text,per_page='1',license='1,2,3,4,5,6,7,8',sort='relevance')
     
     
     try:
