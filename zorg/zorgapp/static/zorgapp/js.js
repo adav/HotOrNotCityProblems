@@ -83,7 +83,14 @@ $('body').on('contextmenu', function(e) {
 });
 
 $('body').delegate('.analize-city', 'click', function(e) {
-  showRanking(sampleData);
+  //showRanking(sampleData);
+  showLoadingCard();
+  $.getJSON(getUrl('top'), function(data) {
+    showRanking({
+      title: 'Top Topics',
+      topics: data
+    });
+  });
 });
 
 $('body').delegate('.analize-topic', 'click', function(e) {
