@@ -6,6 +6,7 @@ from zorgapp.serializers import BattleSerializer, TopicSerializer
 from rest_framework import mixins, generics, status
 from django.template import RequestContext, loader
 from django.http import HttpResponse
+from django.db import IntegrityError
 import images
 
 def get_topic_name(text):
@@ -35,14 +36,22 @@ class TopicView(APIView):
         name = get_topic_name(request.DATA['text'])
         
         #TODO Fetch Image URL for name
-        #url = images.get_url(name)
-        topic = Topic(name=name,hits=0,views=0,img_url='')
+        url = images.get_url(name)
+        topic = Topic(name=name,hits=0,views=0,img_url=url)
         
         #TODO Have duplicates return gracefully (hits++, views++ or something)
-        topic.save()
+        stat = status.HTTP_201_CREATED
+        try:
+            topic.save()
+        except IntegrityError:
+            topic = Topic.objects.filter(name=name)[0]
+            topic.hits += 1
+            topic.views += 1
+            topic.save()
+            stat = status.HTTP_200_OK
         
         serializer = TopicSerializer(topic)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=stat)
         
 class BattleView(mixins.CreateModelMixin,
                  generics.GenericAPIView):
