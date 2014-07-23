@@ -11,9 +11,7 @@ import images
 
 def get_topic_name(text):
     from nlp import tokenizeWorry
-    worry = tokenizeWorry(text)
-    print(worry)
-    return worry
+    return tokenizeWorry(text)
     
 def index(request):
     user_id = request.session.get('zorguser')
@@ -37,7 +35,9 @@ class TopicView(APIView):
         
     def post(self, request):
         name = get_topic_name(request.DATA['text'])
-        
+        if len(name) < 4:
+            return Response(status = status.HTTP_200_OK)
+            
         # Fetch Image URL for name
         url = images.get_url(name)
         topic = Topic(name=name,hits=0,views=0,img_url=url)
@@ -78,10 +78,11 @@ class BattleView(mixins.CreateModelMixin,
         
 
 default_count_top = 10;
+thresh_hold_min_views = 5;   
 class TopView(APIView):
     def get(self, request):
         #TODO filter out battles the user has done before
         topics = Topic.objects.all()    
-        new_topics = sorted(topics, key=lambda x: float(x.hits)/x.views if x.views > 0 else 0, reverse=True)
+        new_topics = sorted(topics, key=lambda x: float(x.hits)/x.views if x.views > thresh_hold_min_views else 0, reverse=True)
         serializer = TopicSerializer(new_topics[0:default_count_top-1], many=True)
         return Response(serializer.data)
