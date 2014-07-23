@@ -286,7 +286,7 @@ var showAnalytics = function() {
 
 (function init() {
   showInitCard();
-  navigator.geolocation.getCurrentPosition(getUserLocation)
+  navigator.geolocation.getCurrentPosition(getUserLocation);
   
   $.Topic('addBattles').subscribe(hasMoreBattles);
 })();
