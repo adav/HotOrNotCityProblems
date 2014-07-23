@@ -723,11 +723,13 @@ var goToStep = function(step, foward) {
 
 var step = 0;
 $('body').on('keyup', function(e) {
-  if (e.keyCode == 39) {
+  if (e.keyCode == 39 ||
+      e.keyCode == 34) {
     e.preventDefault();
     step++;
     goToStep(step, true);
-  } else if (e.keyCode == 37) {
+  } else if (e.keyCode == 37 ||
+      e.keyCode == 33) {
     e.preventDefault();
     step--;
     goToStep(step);
