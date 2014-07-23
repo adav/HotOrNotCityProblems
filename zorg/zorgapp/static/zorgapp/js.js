@@ -21,6 +21,7 @@ jQuery.Topic = function( id ) {
 var GEO_KEY = 'AIzaSyDv7-R-BYh7D8PksYznVHf7hugSMaXOZlY';
 var GEO_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
 var USER_CITY;
+var LATLONG = {};
 
 
 
@@ -51,19 +52,26 @@ var setState = function(state) {
   $('body').addClass(STATE_CLASSES[state]);
 };
 
-$('body').delegate('.worry', 'click', function(e) {
-  var state = this.id == 'left' ? STATES.leftWin : STATES.rightWin;
+$('body').delegate('.worry-battle', 'click', function(e) {
+  var state = $(this).hasClass('left') ? STATES.leftWin : STATES.rightWin;
   $(this).addClass('win');
   setState(state);
   sendResults();
   showNextCard();
 });
 
-var createWorryNode = function(id, data) {
+var createWorryNode = function(side, data) {
+  return createHalfNode(side, 'worry-battle', data);
+};
+
+var createHalfNode = function(side, className, data) {
+  var style = '';
+  if (data.img_url) {
+    style = 'background-image: url(' + data.img_url + ')'; 
+  }
   return $('<div/>', {
-    id: id,
-    class: 'worry',
-    style: 'background-image: url(' + data.img_url + ')'
+    class: className + ' worry ' + side,
+    style: style
   }).append($('<div/>', {
     class: "worry-text"
   })).append($('<h1/>', {
@@ -153,6 +161,7 @@ var showCard = function(card) {
   cards.addClass('leaving');
   $('body').append(card);
   cards.addClass('leave');
+  window.setTimeout(function() {cards.remove()}, 1000);
 };
 
 var sendResults = function() {
@@ -170,7 +179,9 @@ var sendResults = function() {
     winning_topic: winningTopic.id,
     losing_topic: losingTopic.id,
     city: USER_CITY,
-    user: USER_ID
+    user: USER_ID,
+    location_lat: LATLONG.latitude.toFixed(6),
+    location_long: LATLONG.longitude.toFixed(6)
   });
 };
 
@@ -180,10 +191,13 @@ var getUrl = function(path) {
 
 var addBattles = function(topics) {
   var len = topics.length;
-  for (var i = 0; i < len / 2; i++) {
-    var battle = [topics[i], topics[len - 1 - i]];
-    if (isUniqueBattle(battle)) {
-      addBattle(battle);
+  for (var i = 0; i < len; i++) {
+    var j = Math.floor(Math.random() * 10);
+    if (i != j) {
+      var battle = [topics[i], topics[j]];      
+      if (isUniqueBattle(battle)) {
+        addBattle(battle);
+      }
     }
   }
   $.Topic('addBattles').publish();
@@ -246,6 +260,7 @@ var hasMoreBattles = function() {
 };
 
 var getUserLocation = function(position) {
+  LATLONG = position.coords;
   var latlng = position.coords.latitude + ',' + position.coords.longitude;
   $.getJSON(GEO_URL, {
     key: GEO_KEY,
@@ -259,9 +274,147 @@ var getUserLocation = function(position) {
   });
 };
 
+var showAnalytics = function() {
+  var node = createCard();
+  var left = createHalfNode('left', 'analize-city', {
+    name: 'City'
+  });
+  node.append(left);
+  var right = createHalfNode('right', 'analize-topic', {
+    name: 'Topic'
+  });
+  node.append(right);
+  showCard(node);
+};
+
+var createRank = function(topic, i) {
+  var div = $('<div/>', {
+    class: "worry-text"
+  });
+  
+  div.append($('<div/>', {
+    class: 'rank-number'
+  }).html((i + 1) + '.'));
+  
+  div.append($('<h1/>').html(topic.name));
+  
+  return $('<li/>', {
+    class: 'rank',
+    style: 'background-image: url(' + topic.img_url + ')'
+  }).append(div);
+};
+
+var showRanking = function(data) {
+  var node = createCard();
+  node.append($('<h1/>', {
+    class: 'ranking-title'
+  }).html(data.title));
+  
+  var ol = $('<ol/>', {
+    class: 'rankings'
+  });
+  for (var i = 0; i < data.topics.length; i++) {
+    var rank = createRank(data.topics[i], i);
+    ol.append(rank);
+  }
+  node.append(ol);
+  showCard(node);
+};
+
 (function init() {
   showInitCard();
-  navigator.geolocation.getCurrentPosition(getUserLocation)
+  navigator.geolocation.getCurrentPosition(getUserLocation);
   
   $.Topic('addBattles').subscribe(hasMoreBattles);
 })();
+
+var sampleData = {
+  title: 'Problems for the Emerald City',
+  topics: [
+    {
+        "id": 10, 
+        "name": "Corrupt Police", 
+        "img_url": "http://d1pvsnudg6kebv.cloudfront.net/wp-content/uploads/2012/05/Uttarakhand-Police.jpg"
+    }, 
+    {
+        "id": 6, 
+        "name": "Taxes", 
+        "img_url": "http://2.bp.blogspot.com/-E4WtTDSHh_w/TjdwWK-SifI/AAAAAAAAFlM/N56N6UuGFdA/s1600/smoking+uncle_sam_taxes.jpg"
+    }, 
+    {
+        "id": 13, 
+        "name": "Bureaucracy", 
+        "img_url": "http://englishmaninmarseille.files.wordpress.com/2011/12/mp9003993501-1024x1024.jpg"
+    }, 
+    {
+        "id": 5, 
+        "name": "Traffic jams", 
+        "img_url": "http://s1.cdn.autoevolution.com/images/news/how-to-avoid-traffic-jams-35319_2.jpg"
+    }, 
+    {
+        "id": 1, 
+        "name": "Air pollution", 
+        "img_url": "http://www.drsoram.com/wp-content/uploads/air%20pollution%202.jpg"
+    }, 
+    {
+        "id": 17, 
+        "name": "Stolen Bike", 
+        "img_url": ""
+    }, 
+    {
+        "id": 14, 
+        "name": "Drugs", 
+        "img_url": "http://www.m-n-d.co.za/wp-content/uploads/2014/05/nodrugs.png"
+    }, 
+    {
+        "id": 2, 
+        "name": "Dog's poop", 
+        "img_url": "http://www.the3dstudio.com/download_image.ashx?size=large&mode=product&file_guid=1dfac141-2649-4100-a1fb-d770be85a358"
+    }, 
+    {
+        "id": 3, 
+        "name": "Parking", 
+        "img_url": "http://i.dailymail.co.uk/i/pix/2013/04/11/article-2307768-193E7FA1000005DC-662_634x601.jpg"
+    }, 
+    {
+        "id": 7, 
+        "name": "Noise", 
+        "img_url": "http://www.alpinehearingprotection.com/files/2413/7483/4485/earplugs-noise-large.jpg"
+    }, 
+    {
+        "id": 16, 
+        "name": "example", 
+        "img_url": ""
+    }, 
+    {
+        "id": 15, 
+        "name": "Smoking in public places", 
+        "img_url": "http://maneleen.files.wordpress.com/2010/12/no_smoking_law.jpg"
+    }, 
+    {
+        "id": 11, 
+        "name": "Garbage", 
+        "img_url": "http://img.timeinc.net/time/photoessays/2008/naples_garbage/garbage_naples_01.jpg"
+    }, 
+    {
+        "id": 8, 
+        "name": "Beer's Prices", 
+        "img_url": "http://beerbeer.org/wp-content/uploads/2010/10/try-beer-price-01.jpg"
+    }, 
+    {
+        "id": 4, 
+        "name": "Mugging", 
+        "img_url": "https://c2.staticflickr.com/8/7014/6795642413_2849a7df9c_z.jpg"
+    }, 
+    {
+        "id": 9, 
+        "name": "Drunks punks", 
+        "img_url": "http://images.mirror.co.uk/upl/m4/oct2011/6/0/image-10-for-editorial-pics-11-10-2011-gallery-609101548.jpg"
+    }, 
+    {
+        "id": 12, 
+        "name": "Aids", 
+        "img_url": "http://medimoon.com/wp-content/uploads/2012/07/aids-1.jpg"
+    }
+]
+};
