@@ -19,7 +19,7 @@ def tokenizeWorry(userSubmittedString):
 	result_words = []
 
 	for pair in nltk.pos_tag(filtered_words):
-		if "VB" in pair[1] or "NN" in pair[1]: 
+		if "VB" in pair[1] or "NN" in pair[1] or "J" in pair[1]: 
 			result_words.append(pair[0].title())
 
 	return ' '.join(result_words)
