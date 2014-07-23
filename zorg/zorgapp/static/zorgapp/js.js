@@ -18,6 +18,23 @@ jQuery.Topic = function( id ) {
 };
 
 
+function throttle(func, wait) {
+    var timeout;
+    return function() {
+        var context = this, args = arguments;
+        if (!timeout) {
+            // the first time the event fires, we setup a timer, which 
+            // is used as a guard to block subsequent calls; once the 
+            // timer's handler fires, we reset it and create a new one
+            timeout = setTimeout(function() {
+                timeout = null;
+                func.apply(context, args);
+            }, wait);
+        }
+    }
+}
+
+
 var GEO_KEY = 'AIzaSyDv7-R-BYh7D8PksYznVHf7hugSMaXOZlY';
 var GEO_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
 var USER_CITY;
@@ -234,6 +251,7 @@ var fetchBattles = function() {
     addBattles(data);
   });
 };
+var fetchBattlesThrottled = throttle(fetchBattles, 1000);
 
 var showNextCard = function() {
   if (Math.random() > .1) {
@@ -252,7 +270,7 @@ var showNextBattle = function() {
   }
   
   if (battleQueue.length < 3) {
-    fetchBattles();
+    fetchBattlesThrottled();
   }
 };
 
