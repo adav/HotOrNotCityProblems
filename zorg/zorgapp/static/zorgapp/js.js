@@ -82,15 +82,20 @@ $('body').on('contextmenu', function(e) {
   showAnalytics();
 });
 
+var first = true;
 $('body').delegate('.analize-city', 'click', function(e) {
-  //showRanking(sampleByCity);
-  showLoadingCard();
-  $.getJSON(getUrl('top'), function(data) {
-    showRanking({
-      title: 'Top Topics',
-      topics: data
+  if (first) {
+    showRanking(sampleByCity);
+    first = false;
+  } else { 
+    showLoadingCard();
+    $.getJSON(getUrl('top'), function(data) {
+      showRanking({
+        title: 'Top Topics',
+        topics: data
+      });
     });
-  });
+   }
 });
 
 $('body').delegate('.analize-topic', 'click', function(e) {
