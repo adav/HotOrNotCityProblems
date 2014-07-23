@@ -323,15 +323,53 @@ var showRanking = function(data) {
   showCard(node);
 };
 
-var createLeftCompare = function(data) {
-  var topic = data.topic1;
-  var num = data.comparison.length;
-  data.comparisons.forEach(function(comparison) {
-    var percent = comparison.topic1_percent;
-  });
+var createLeftCompare = function(canvas, data) {
+  createCompare(canvas, data, data.topic1, 'topic1_percent', true);
+};
+
+var createRightCompare = function(canvas, data) {
+  createCompare(canvas, data, data.topic2, 'topic2_percent', false);
+};
+
+var createCompare = function(canvas, data, topic, key, left) {
+  var c = canvas.getContext('2d');
+  
+  var img = new Image();
+  img.onload = function() {
+    var num = data.comparisons.length;
+    var stepHeight = canvas.height / num;
+    c.save();
+    c.beginPath();
+    var startX = left ? 0 : canvas.width;
+    c.moveTo(startX, 0);
+    data.comparisons.forEach(function(comparison, i) {
+      var percent = comparison[key];
+      percent = left ? percent : 1 - percent;
+      var clipWidth = canvas.width * percent;
+      c.lineTo(clipWidth, i * stepHeight);
+      c.lineTo(clipWidth, (i + 1) * stepHeight);
+    });
+    c.lineTo(startX, num * stepHeight);
+    c.closePath();
+    c.stroke();
+    c.clip();
+    c.drawImage(img, 0, 0, canvas.width, canvas.height);
+    c.restore();
+  }
+  img.src = topic.img_url;
 };
 
 var showCompare = function(data) {
+  var canvas = document.createElement('canvas');
+  canvas.height = $(window).height();
+  canvas.width = $(window).width();
+ 
+  var left = createLeftCompare(canvas, data);
+  var right = createRightCompare(canvas, data);
+  
+  var node = createCard();
+  node.append(canvas);
+  showCard(node);
 };
 
 (function init() {
@@ -355,8 +393,18 @@ var sampleCompare = {
   comparisons: [
     {
       city: 'Tel Aviv',
-      topic1_percent: '25',
-      topic2_percent: '75'
+      topic1_percent: '.25',
+      topic2_percent: '.75'
+    },
+    {
+      city: 'Chicago',
+      topic1_percent: '.75',
+      topic2_percent: '.25'
+    },
+    {
+      city: 'London',
+      topic1_percent: '.65',
+      topic2_percent: '.35'
     }
   ]  
 };
