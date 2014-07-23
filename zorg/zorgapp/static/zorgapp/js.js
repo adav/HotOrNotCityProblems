@@ -21,6 +21,7 @@ jQuery.Topic = function( id ) {
 var GEO_KEY = 'AIzaSyDv7-R-BYh7D8PksYznVHf7hugSMaXOZlY';
 var GEO_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
 var USER_CITY;
+var LATLONG = {};
 
 
 
@@ -51,19 +52,26 @@ var setState = function(state) {
   $('body').addClass(STATE_CLASSES[state]);
 };
 
-$('body').delegate('.worry', 'click', function(e) {
-  var state = this.id == 'left' ? STATES.leftWin : STATES.rightWin;
+$('body').delegate('.worry-battle', 'click', function(e) {
+  var state = $(this).hasClass('left') ? STATES.leftWin : STATES.rightWin;
   $(this).addClass('win');
   setState(state);
   sendResults();
   showNextCard();
 });
 
-var createWorryNode = function(id, data) {
+var createWorryNode = function(side, data) {
+  return createHalfNode(side, 'worry-battle', data);
+};
+
+var createHalfNode = function(side, className, data) {
+  var style = '';
+  if (data.img_url) {
+    style = 'background-image: url(' + data.img_url + ')'; 
+  }
   return $('<div/>', {
-    id: id,
-    class: 'worry',
-    style: 'background-image: url(' + data.img_url + ')'
+    class: className + ' worry ' + side,
+    style: style
   }).append($('<div/>', {
     class: "worry-text"
   })).append($('<h1/>', {
@@ -171,7 +179,9 @@ var sendResults = function() {
     winning_topic: winningTopic.id,
     losing_topic: losingTopic.id,
     city: USER_CITY,
-    user: USER_ID
+    user: USER_ID,
+    location_lat: LATLONG.latitude,
+    location_long: LATLONG.longitude
   });
 };
 
@@ -247,6 +257,7 @@ var hasMoreBattles = function() {
 };
 
 var getUserLocation = function(position) {
+  LATLONG = position.coords;
   var latlng = position.coords.latitude + ',' + position.coords.longitude;
   $.getJSON(GEO_URL, {
     key: GEO_KEY,
@@ -258,6 +269,19 @@ var getUserLocation = function(position) {
       USER_CITY = city;
     }
   });
+};
+
+var showAnalytics = function() {
+  var node = createCard();
+  var left = createHalfNode('left', 'analize-city', {
+    name: 'City'
+  });
+  node.append(left);
+  var right = createHalfNode('right', 'analize-topic', {
+    name: 'Topic'
+  });
+  node.append(right);
+  showCard(node);
 };
 
 (function init() {

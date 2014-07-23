@@ -25,12 +25,12 @@ body {
   background-color: rgba(50, 50, 50, .1);
 }
 
-#right{
+.right{
   left: 50%;
   right: 0;
 }
 
-#left {
+.left {
   left: 0;
   right: 50%;
 }
@@ -78,4 +78,12 @@ body {
 
 .leave {
   top: -100%;
+}
+
+.analize-city {
+  background-color: #5bc0de;
+}
+
+.analize-topic {
+  background-color: #ec971f;
 }
