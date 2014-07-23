@@ -30,6 +30,7 @@ h1 {
 }
 
 .worry-text {
+  position: relative;
   width: 100%;
   height: 100%;
   background-color: rgba(50, 50, 50, .1);
@@ -108,10 +109,15 @@ h1 {
 .compare-city {
   font-size: 65px;
 }
+.rank h1 {
+  line-height: 85px;
+}
 .rank-number{
-  padding-left: 15px;
-  float: left;
-  overflow: hidden;
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  -webkit-transform: translate(0, -50%);
+  transform: translate(0, -50%);
 }
 
 .rank:nth-child(odd) {
@@ -135,4 +141,26 @@ h1 {
   left: 50%;
   -webkit-transform: translate(-50%, 0);
   transform: translate(-50%, 0);
+}
+
+.rank:nth-child(7n) h1 {
+  background-color: rgba(255, 0, 0, .5)
+}
+.rank:nth-child(7n+1) h1 {
+  background-color: rgba(255, 127, 0, .5)
+}
+.rank:nth-child(7n+2) h1 {
+  background-color: rgba(255, 255, 0, .5)
+}
+.rank:nth-child(7n+3) h1 {
+  background-color: rgba(0, 255, 0, .5)
+}
+.rank:nth-child(7n+4) h1 {
+  background-color: rgba(0, 0, 255, .5)
+}
+.rank:nth-child(7n+5) h1 {
+  background-color: rgba(75, 0, 130, .5)
+}
+.rank:nth-child(7n+6) h1 {
+  background-color: rgba(143, 0, 255, .5)
 }
