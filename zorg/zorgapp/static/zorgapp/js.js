@@ -361,6 +361,7 @@ var createCompare = function(canvas, data, topic, key, left) {
 
 var showCompare = function(data) {
   var canvas = document.createElement('canvas');
+  canvas.className = 'compare-canvas';
   canvas.height = $(window).height();
   canvas.width = $(window).width();
  
@@ -369,6 +370,31 @@ var showCompare = function(data) {
   
   var node = createCard();
   node.append(canvas);
+  
+  var left = createHalfNode('left', 'compare-block', {
+    name: data.topic1.name
+  });
+  node.append(left);
+  var right = createHalfNode('right', 'compare-block', {
+    name: data.topic2.name
+  });
+  node.append(right);
+  
+  
+  var num = data.comparisons.length;
+  var stepHeight = canvas.height / num;
+  data.comparisons.forEach(function(comparison, i) {
+    var div = document.createElement('div');
+    div.className = 'compare-city';
+    div.innerHTML = comparison.city;
+    
+    div.style.top = (i * stepHeight) + 'px';
+    div.style.lineHeight = stepHeight + 'px';
+    div.style.height = stepHeight + 'px';
+    
+    node.append(div);
+  });
+  
   showCard(node);
 };
 

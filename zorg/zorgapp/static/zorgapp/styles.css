@@ -59,6 +59,7 @@ h1 {
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .init-card {
@@ -103,7 +104,8 @@ h1 {
   margin: 0;
   padding: 0;
 }
-.rank {
+.rank,
+.compare-city {
   font-size: 65px;
 }
 .rank-number{
@@ -120,4 +122,17 @@ h1 {
 }
 .ranking-title {
   background-color: #5bc0de;
+}
+
+.compare-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.compare-city {
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
 }
