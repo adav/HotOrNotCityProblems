@@ -580,7 +580,7 @@ var sampleByCity = {
 };
 
 var sampleByTopic = {
-  title: 'Losing Your Head',
+  title: 'Witches',
   topics: [
     {
         "name": "King's Landing", 
