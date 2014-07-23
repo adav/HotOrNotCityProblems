@@ -732,6 +732,9 @@ $('body').on('keyup', function(e) {
       e.keyCode == 33) {
     e.preventDefault();
     step--;
+    if (step < 0) {
+      step = 0;
+    }
     goToStep(step);
   }
 });
