@@ -180,8 +180,8 @@ var sendResults = function() {
     losing_topic: losingTopic.id,
     city: USER_CITY,
     user: USER_ID,
-    location_lat: LATLONG.latitude,
-    location_long: LATLONG.longitude
+    location_lat: LATLONG.latitude.toFixed(6),
+    location_long: LATLONG.longitude.toFixed(6)
   });
 };
 
