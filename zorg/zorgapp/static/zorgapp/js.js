@@ -472,30 +472,38 @@ var showCompare = function(data) {
 
 var sampleCompare = {
   topic1: {
-    "id": 10, 
-    "name": "Corrupt Police", 
-    "img_url": "http://d1pvsnudg6kebv.cloudfront.net/wp-content/uploads/2012/05/Uttarakhand-Police.jpg"
+    "name": "Flat Word", 
+    "img_url": ""
   },
   topic2: {
-    "id": 6, 
-    "name": "Taxes", 
-    "img_url": "http://2.bp.blogspot.com/-E4WtTDSHh_w/TjdwWK-SifI/AAAAAAAAFlM/N56N6UuGFdA/s1600/smoking+uncle_sam_taxes.jpg"
+    "name": "Tyrants", 
+    "img_url": ""
   },
   comparisons: [
     {
-      city: 'Tel Aviv',
-      topic1_percent: '.25',
-      topic2_percent: '.75'
-    },
-    {
-      city: 'Chicago',
+      city: 'South Park',
       topic1_percent: '.75',
       topic2_percent: '.25'
     },
     {
-      city: 'London',
-      topic1_percent: '.65',
-      topic2_percent: '.35'
+      city: "King's Landing",
+      topic1_percent: '.10',
+      topic2_percent: '.90'
+    },
+    {
+      city: 'Tatoonie',
+      topic1_percent: '.35',
+      topic2_percent: '.65'
+    },
+    {
+      city: 'Bedrock',
+      topic1_percent: '.80',
+      topic2_percent: '.20'
+    },
+    {
+      city: 'Cartoonland',
+      topic1_percent: '1',
+      topic2_percent: '0'
     }
   ]  
 };
