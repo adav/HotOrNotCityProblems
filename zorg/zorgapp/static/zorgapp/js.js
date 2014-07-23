@@ -191,10 +191,13 @@ var getUrl = function(path) {
 
 var addBattles = function(topics) {
   var len = topics.length;
-  for (var i = 0; i < len / 2; i++) {
-    var battle = [topics[i], topics[len - 1 - i]];
-    if (isUniqueBattle(battle)) {
-      addBattle(battle);
+  for (var i = 0; i < len; i++) {
+    var j = Math.floor(Math.random() * 10);
+    if (i != j) {
+      var battle = [topics[i], topics[j]];      
+      if (isUniqueBattle(battle)) {
+        addBattle(battle);
+      }
     }
   }
   $.Topic('addBattles').publish();
