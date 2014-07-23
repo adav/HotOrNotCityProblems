@@ -11,9 +11,7 @@ import images
 
 def get_topic_name(text):
     from nlp import tokenizeWorry
-    worry = tokenizeWorry(text)
-    print(worry)
-    return worry
+    return tokenizeWorry(text)
     
 def index(request):
     user_id = request.session.get('zorguser')
@@ -37,7 +35,9 @@ class TopicView(APIView):
         
     def post(self, request):
         name = get_topic_name(request.DATA['text'])
-        
+        if len(name) < 4:
+            return Response(status = status.HTTP_200_OK)
+            
         # Fetch Image URL for name
         url = images.get_url(name)
         topic = Topic(name=name,hits=0,views=0,img_url=url)
