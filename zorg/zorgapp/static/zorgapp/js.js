@@ -505,43 +505,43 @@ var sampleByCity = {
   topics: [
     {
         "name": "Falling Houses", 
-        "img_url": ""
+        "img_url": "http://kickfailure.com/wp-content/uploads/2013/04/The-Wizard-of-Oz-House-on-witch.jpg"
     },
     {
         "name": "Witches", 
-        "img_url": ""
+        "img_url": "http://images5.fanpop.com/image/photos/25800000/wo-the-wizard-of-oz-25836020-718-544.jpg"
     },
     {
-        "name": "Stomping on Muchins", 
-        "img_url": ""
+        "name": "Stomping on Munchkins", 
+        "img_url": "http://upload.wikimedia.org/wikipedia/en/3/32/Munchkins-film.jpg"
     },
     {
         "name": "Flying Monkeys", 
-        "img_url": ""
+        "img_url": "http://img1.wikia.nocookie.net/__cb20131208072603/oz_/images/5/50/Flying-Monkeys.jpg"
     },
     {
         "name": "Twisters", 
-        "img_url": ""
+        "img_url": "http://marioncountymessenger.com/wp-content/uploads/2011/04/Skinny-Tornado.jpg"
     },
     {
-        "name": "Lion, Tigers, and Bears", 
-        "img_url": ""
+        "name": "Lions, Tigers, and Bears", 
+        "img_url": "http://i.huffpost.com/gen/1492882/thumbs/o-BLT-570.jpg?6"
     },
     {
         "name": "Field of Poppies", 
-        "img_url": ""
+        "img_url": "http://upload.wikimedia.org/wikipedia/commons/a/a0/Poppy2004.JPG"
     },
     {
         "name": "Rust", 
-        "img_url": ""
+        "img_url": "http://www.targetprocess.com/blog/wp-content/uploads/2013/09/The-Rusty-Tinman.jpg"
     },
     {
         "name": "Being Eaten By Birds", 
-        "img_url": ""
+        "img_url": "https://slm-assets3.secondlife.com/assets/6359260/view_large/CJ_Scarecrow_with_Birds___3_Flowerfield04.jpg?1349213717"
     },
     {
         "name": "Wizards", 
-        "img_url": ""
+        "img_url": "http://images1.fanpop.com/images/photos/2000000/Wizard-of-Oz-Caps-the-wizard-of-oz-2028565-720-536.jpg"
     }
 ]
 };
