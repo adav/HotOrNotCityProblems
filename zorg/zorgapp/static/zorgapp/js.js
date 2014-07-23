@@ -82,12 +82,7 @@ $('body').on('contextmenu', function(e) {
   showAnalytics();
 });
 
-var first = true;
 $('body').delegate('.analize-city', 'click', function(e) {
-  if (first) {
-    showRanking(sampleByCity);
-    first = false;
-  } else { 
     showLoadingCard();
     $.getJSON(getUrl('top'), function(data) {
       showRanking({
@@ -95,8 +90,8 @@ $('body').delegate('.analize-city', 'click', function(e) {
         topics: data
       });
     });
-   }
-});
+  }
+);
 
 $('body').delegate('.analize-topic', 'click', function(e) {
   showRanking(sampleByTopic);
@@ -146,7 +141,9 @@ var showInitCard = function() {
     $('<h1/>', { class: "v-center" }).html('Zorg'),
     'init-card');
   showCard(node);
-  fetchBattles();
+  if (!battleQueue.length) {
+    fetchBattles();
+  }
 };
 
 var showLoadingCard = function() {
@@ -172,7 +169,7 @@ var showCreateWorryCard = function() {
   node.append($('<input/>', {
     type: 'text',
     class: 'form-control',
-    placeholder: 'example: poop on the sidewalk'
+    placeholder: 'example: The mail is always late'
   }));
   node.append($('<button/>', {
     type: 'submit',
@@ -623,3 +620,92 @@ var sampleByTopic = {
     }
   ]
 };
+
+var sampleBattle1 = [
+  {
+    name: 'Sorting Recycling',
+    img_url: 'http://media.mwcradio.com/mimesis/2010-04/19/recycling_jpg_475x310_q85.jpg'
+  },
+  {
+    name: 'Drunk Punks',
+    img_url: 'http://images.mirror.co.uk/upl/m4/oct2011/6/0/image-10-for-editorial-pics-11-10-2011-gallery-609101548.jpg'
+  }
+];
+var sampleBattle2 = [
+  {
+    name: 'Expensive Taxis',
+    img_url: 'http://cdn.acidcow.com/pics/20100129/most_expensive_taxis_02.jpg'
+  },
+  {
+    name: 'Mugging',
+    img_url: 'https://c2.staticflickr.com/8/7014/6795642413_2849a7df9c_z.jpg'
+  }
+];
+var sampleBattle3 = [
+  {
+    name: 'Busy Intersections',
+    img_url: 'http://www.myslova.org/storage/huge-traffic-jam.jpg?__SQUARESPACE_CACHEVERSION=1341330977366'
+  },
+  {
+    name: 'Late Trains',
+    img_url: 'http://media1.santabanta.com/full1/Vehicles/Trains/trains-2a.jpg'
+  }
+];
+var sampleCustomBattle = [
+  {
+    name: 'City crime',
+    img_url: 'http://media.morristechnology.com/mediafilesvr/upload/connectstatesboro/article/crimeW_______________.jpg'
+  },
+  {
+    name: 'Cyber Attacks',
+    img_url: 'http://channel.nationalgeographic.com/exposure/content/photo/photo/2073317_cyber-attack_7hqdjmj4am3d2cszxsyeykq4xpncurxrbvj6lwuht2ya6mzmafma_610x457.jpg'
+  }
+];
+
+var goToStep = function(step) {
+  switch(step) {
+    case 1:
+      showInitCard();
+      break;
+    case 2:
+      showBattleCard(sampleBattle1);
+      break;
+    case 3:
+      showBattleCard(sampleBattle2);
+      break;
+    case 4:
+      showBattleCard(sampleBattle3);
+      break;
+    case 5:
+      showCreateWorryCard();
+      break;
+    case 6:
+      showBattleCard(sampleCustomBattle);
+      break;
+    case 7:
+      showAnalytics();
+      break;
+    case 8:
+      showRanking(sampleByCity);
+      break;
+    case 9:
+      showRanking(sampleByTopic);
+      break;
+    case 10:
+      showCompare(sampleCompare);
+      break;
+  }
+};
+
+var step = 0;
+$('body').on('keyup', function(e) {
+  if (e.keyCode == 39) {
+    e.preventDefault();
+    step++;
+    goToStep(step);
+  } else if (e.keyCode == 37) {
+    e.preventDefault();
+    step--;
+    goToStep(step);
+  }
+});
