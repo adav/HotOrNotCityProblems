@@ -140,9 +140,11 @@ var showCreateWorryCard = function() {
   node.submit(function(e) {
     e.preventDefault();
     var value = $(this.elements[0]).val();
-    $.post(getUrl('topic/'), {
-      text: value
-    });
+    if (value) {
+      $.post(getUrl('topic/'), {
+        text: value
+      });
+    }
     showNextCard();
   });
   
@@ -321,12 +323,43 @@ var showRanking = function(data) {
   showCard(node);
 };
 
+var createLeftCompare = function(data) {
+  var topic = data.topic1;
+  var num = data.comparison.length;
+  data.comparisons.forEach(function(comparison) {
+    var percent = comparison.topic1_percent;
+  });
+};
+
+var showCompare = function(data) {
+};
+
 (function init() {
   showInitCard();
   navigator.geolocation.getCurrentPosition(getUserLocation);
   
   $.Topic('addBattles').subscribe(hasMoreBattles);
 })();
+
+var sampleCompare = {
+  topic1: {
+    "id": 10, 
+    "name": "Corrupt Police", 
+    "img_url": "http://d1pvsnudg6kebv.cloudfront.net/wp-content/uploads/2012/05/Uttarakhand-Police.jpg"
+  },
+  topic2: {
+    "id": 6, 
+    "name": "Taxes", 
+    "img_url": "http://2.bp.blogspot.com/-E4WtTDSHh_w/TjdwWK-SifI/AAAAAAAAFlM/N56N6UuGFdA/s1600/smoking+uncle_sam_taxes.jpg"
+  },
+  comparisons: [
+    {
+      city: 'Tel Aviv',
+      topic1_percent: '25',
+      topic2_percent: '75'
+    }
+  ]  
+};
 
 var sampleData = {
   title: 'Problems for the Emerald City',
