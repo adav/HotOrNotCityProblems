@@ -94,7 +94,7 @@ $('body').delegate('.analize-city', 'click', function(e) {
 });
 
 $('body').delegate('.analize-topic', 'click', function(e) {
-  showRanking(sampleData);
+  showRanking(sampleByTopic);
 });
 
 var createWorryNode = function(side, data) {
@@ -543,5 +543,51 @@ var sampleByCity = {
         "name": "Wizards", 
         "img_url": ""
     }
-]
+  ]
+};
+
+var sampleByTopic = {
+  title: 'Losing Your Head',
+  topics: [
+    {
+        "name": "King's Landing", 
+        "img_url": ""
+    },
+    {
+        "name": "Tatoonie", 
+        "img_url": ""
+    },
+    {
+        "name": "Gotham City", 
+        "img_url": ""
+    },
+    {
+        "name": "South Park", 
+        "img_url": ""
+    },
+    {
+        "name": "The Shire", 
+        "img_url": ""
+    },
+    {
+        "name": "Atlantis", 
+        "img_url": ""
+    },
+    {
+        "name": "Springfield", 
+        "img_url": ""
+    },
+    {
+        "name": "Bedrock", 
+        "img_url": ""
+    },
+    {
+        "name": "Asgard", 
+        "img_url": ""
+    },
+    {
+        "name": "Tel Aviv", 
+        "img_url": ""
+    }
+  ]
 };
