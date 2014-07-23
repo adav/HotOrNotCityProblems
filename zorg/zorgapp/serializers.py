@@ -10,4 +10,4 @@ class BattleSerializer(serializers.ModelSerializer):
 class TopicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Topic
-        fields = ('id', 'name', 'img_url')
+        fields = ('id', 'name', 'img_url', 'hits','views')
