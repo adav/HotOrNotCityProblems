@@ -21,7 +21,7 @@ jQuery.Topic = function( id ) {
 var GEO_KEY = 'AIzaSyDv7-R-BYh7D8PksYznVHf7hugSMaXOZlY';
 var GEO_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
 var USER_CITY;
-var LATLONG = {};
+var LATLONG;
 
 
 
@@ -177,14 +177,19 @@ var sendResults = function() {
     losingTopic = currentBattle[0];
   }
   
-  $.post(getUrl('battle/'), {
+  var data = {
     winning_topic: winningTopic.id,
     losing_topic: losingTopic.id,
     city: USER_CITY,
-    user: USER_ID,
-    location_lat: LATLONG.latitude.toFixed(6),
-    location_long: LATLONG.longitude.toFixed(6)
-  });
+    user: USER_ID
+  };
+  
+  if (LATLONG) {
+    data['location_lat'] = LATLONG.latitude.toFixed(6),
+    data['location_long'] = LATLONG.longitude.toFixed(6),
+  }
+  
+  $.post(getUrl('battle/'), data);
 };
 
 var getUrl = function(path) {
