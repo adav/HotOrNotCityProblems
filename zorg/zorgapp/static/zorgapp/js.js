@@ -77,6 +77,31 @@ $('body').delegate('.worry-battle', 'click', function(e) {
   showNextCard();
 });
 
+$('body').on('contextmenu', function(e) {
+  e.preventDefault();
+  showAnalytics();
+});
+
+var first = true;
+$('body').delegate('.analize-city', 'click', function(e) {
+  if (first) {
+    showRanking(sampleByCity);
+    first = false;
+  } else { 
+    showLoadingCard();
+    $.getJSON(getUrl('top'), function(data) {
+      showRanking({
+        title: 'Top Topics',
+        topics: data
+      });
+    });
+   }
+});
+
+$('body').delegate('.analize-topic', 'click', function(e) {
+  showRanking(sampleByTopic);
+});
+
 var createWorryNode = function(side, data) {
   return createHalfNode(side, 'worry-battle', data);
 };
@@ -153,6 +178,13 @@ var showCreateWorryCard = function() {
     type: 'submit',
     class: 'btn btn-primary'
   }).html('Go'));
+  node.append($('<button/>', {
+    type: 'submit',
+    class: 'btn btn-inverse'
+  }).html('No thanks')
+  .click(function() {
+    node.children("input").val('');
+  }));
   
   node.submit(function(e) {
     e.preventDefault();
@@ -464,121 +496,130 @@ var showCompare = function(data) {
 
 var sampleCompare = {
   topic1: {
-    "id": 10, 
-    "name": "Corrupt Police", 
-    "img_url": "http://d1pvsnudg6kebv.cloudfront.net/wp-content/uploads/2012/05/Uttarakhand-Police.jpg"
+    "name": "Flat Word", 
+    "img_url": ""
   },
   topic2: {
-    "id": 6, 
-    "name": "Taxes", 
-    "img_url": "http://2.bp.blogspot.com/-E4WtTDSHh_w/TjdwWK-SifI/AAAAAAAAFlM/N56N6UuGFdA/s1600/smoking+uncle_sam_taxes.jpg"
+    "name": "Tyrants", 
+    "img_url": ""
   },
   comparisons: [
     {
-      city: 'Tel Aviv',
-      topic1_percent: '.25',
-      topic2_percent: '.75'
-    },
-    {
-      city: 'Chicago',
+      city: 'South Park',
       topic1_percent: '.75',
       topic2_percent: '.25'
     },
     {
-      city: 'London',
-      topic1_percent: '.65',
-      topic2_percent: '.35'
+      city: "King's Landing",
+      topic1_percent: '.10',
+      topic2_percent: '.90'
+    },
+    {
+      city: 'Tatoonie',
+      topic1_percent: '.35',
+      topic2_percent: '.65'
+    },
+    {
+      city: 'Bedrock',
+      topic1_percent: '.80',
+      topic2_percent: '.20'
+    },
+    {
+      city: 'Cartoonland',
+      topic1_percent: '1',
+      topic2_percent: '0'
     }
   ]  
 };
 
-var sampleData = {
+var sampleByCity = {
   title: 'Problems for the Emerald City',
   topics: [
     {
-        "id": 10, 
-        "name": "Corrupt Police", 
-        "img_url": "http://d1pvsnudg6kebv.cloudfront.net/wp-content/uploads/2012/05/Uttarakhand-Police.jpg"
-    }, 
+        "name": "Falling Houses", 
+        "img_url": "http://kickfailure.com/wp-content/uploads/2013/04/The-Wizard-of-Oz-House-on-witch.jpg"
+    },
     {
-        "id": 6, 
-        "name": "Taxes", 
-        "img_url": "http://2.bp.blogspot.com/-E4WtTDSHh_w/TjdwWK-SifI/AAAAAAAAFlM/N56N6UuGFdA/s1600/smoking+uncle_sam_taxes.jpg"
-    }, 
+        "name": "Witches", 
+        "img_url": "http://images5.fanpop.com/image/photos/25800000/wo-the-wizard-of-oz-25836020-718-544.jpg"
+    },
     {
-        "id": 13, 
-        "name": "Bureaucracy", 
-        "img_url": "http://englishmaninmarseille.files.wordpress.com/2011/12/mp9003993501-1024x1024.jpg"
-    }, 
+        "name": "Stomping on Munchkins", 
+        "img_url": "http://upload.wikimedia.org/wikipedia/en/3/32/Munchkins-film.jpg"
+    },
     {
-        "id": 5, 
-        "name": "Traffic jams", 
-        "img_url": "http://s1.cdn.autoevolution.com/images/news/how-to-avoid-traffic-jams-35319_2.jpg"
-    }, 
+        "name": "Flying Monkeys", 
+        "img_url": "http://img1.wikia.nocookie.net/__cb20131208072603/oz_/images/5/50/Flying-Monkeys.jpg"
+    },
     {
-        "id": 1, 
-        "name": "Air pollution", 
-        "img_url": "http://www.drsoram.com/wp-content/uploads/air%20pollution%202.jpg"
-    }, 
+        "name": "Twisters", 
+        "img_url": "http://marioncountymessenger.com/wp-content/uploads/2011/04/Skinny-Tornado.jpg"
+    },
     {
-        "id": 17, 
-        "name": "Stolen Bike", 
-        "img_url": ""
-    }, 
+        "name": "Lions, Tigers, and Bears", 
+        "img_url": "http://i.huffpost.com/gen/1492882/thumbs/o-BLT-570.jpg?6"
+    },
     {
-        "id": 14, 
-        "name": "Drugs", 
-        "img_url": "http://www.m-n-d.co.za/wp-content/uploads/2014/05/nodrugs.png"
-    }, 
+        "name": "Field of Poppies", 
+        "img_url": "http://upload.wikimedia.org/wikipedia/commons/a/a0/Poppy2004.JPG"
+    },
     {
-        "id": 2, 
-        "name": "Dog's poop", 
-        "img_url": "http://www.the3dstudio.com/download_image.ashx?size=large&mode=product&file_guid=1dfac141-2649-4100-a1fb-d770be85a358"
-    }, 
+        "name": "Rust", 
+        "img_url": "http://www.targetprocess.com/blog/wp-content/uploads/2013/09/The-Rusty-Tinman.jpg"
+    },
     {
-        "id": 3, 
-        "name": "Parking", 
-        "img_url": "http://i.dailymail.co.uk/i/pix/2013/04/11/article-2307768-193E7FA1000005DC-662_634x601.jpg"
-    }, 
+        "name": "Being Eaten By Birds", 
+        "img_url": "https://slm-assets3.secondlife.com/assets/6359260/view_large/CJ_Scarecrow_with_Birds___3_Flowerfield04.jpg?1349213717"
+    },
     {
-        "id": 7, 
-        "name": "Noise", 
-        "img_url": "http://www.alpinehearingprotection.com/files/2413/7483/4485/earplugs-noise-large.jpg"
-    }, 
-    {
-        "id": 16, 
-        "name": "example", 
-        "img_url": ""
-    }, 
-    {
-        "id": 15, 
-        "name": "Smoking in public places", 
-        "img_url": "http://maneleen.files.wordpress.com/2010/12/no_smoking_law.jpg"
-    }, 
-    {
-        "id": 11, 
-        "name": "Garbage", 
-        "img_url": "http://img.timeinc.net/time/photoessays/2008/naples_garbage/garbage_naples_01.jpg"
-    }, 
-    {
-        "id": 8, 
-        "name": "Beer's Prices", 
-        "img_url": "http://beerbeer.org/wp-content/uploads/2010/10/try-beer-price-01.jpg"
-    }, 
-    {
-        "id": 4, 
-        "name": "Mugging", 
-        "img_url": "https://c2.staticflickr.com/8/7014/6795642413_2849a7df9c_z.jpg"
-    }, 
-    {
-        "id": 9, 
-        "name": "Drunks punks", 
-        "img_url": "http://images.mirror.co.uk/upl/m4/oct2011/6/0/image-10-for-editorial-pics-11-10-2011-gallery-609101548.jpg"
-    }, 
-    {
-        "id": 12, 
-        "name": "Aids", 
-        "img_url": "http://medimoon.com/wp-content/uploads/2012/07/aids-1.jpg"
+        "name": "Wizards", 
+        "img_url": "http://images1.fanpop.com/images/photos/2000000/Wizard-of-Oz-Caps-the-wizard-of-oz-2028565-720-536.jpg"
     }
-]
+  ]
+};
+
+var sampleByTopic = {
+  title: 'Losing Your Head',
+  topics: [
+    {
+        "name": "King's Landing", 
+        "img_url": ""
+    },
+    {
+        "name": "Tatoonie", 
+        "img_url": ""
+    },
+    {
+        "name": "Gotham City", 
+        "img_url": ""
+    },
+    {
+        "name": "South Park", 
+        "img_url": ""
+    },
+    {
+        "name": "The Shire", 
+        "img_url": ""
+    },
+    {
+        "name": "Atlantis", 
+        "img_url": ""
+    },
+    {
+        "name": "Springfield", 
+        "img_url": ""
+    },
+    {
+        "name": "Bedrock", 
+        "img_url": ""
+    },
+    {
+        "name": "Asgard", 
+        "img_url": ""
+    },
+    {
+        "name": "Tel Aviv", 
+        "img_url": ""
+    }
+  ]
 };
