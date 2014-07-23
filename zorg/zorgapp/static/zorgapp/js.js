@@ -209,6 +209,7 @@ var showBattleCard = function(data) {
 };
 
 var showCard = function(card) {
+  $('body').scrollTop(0);
   var cards = $('.card');
   cards.addClass('leaving');
   $('body').append(card);
@@ -584,43 +585,43 @@ var sampleByTopic = {
   topics: [
     {
         "name": "Salem", 
-        "img_url": ""
+        "img_url": "http://sites.psu.edu/schorrclblog/wp-content/uploads/sites/5101/2013/10/houses-wallpapers-witch-house-salem-massachusetts-photography-photo.jpg"
     },
     {
         "name": "Emerald City", 
-        "img_url": ""
+        "img_url": "http://3.bp.blogspot.com/-kj_twuNiVKo/ToH2X3zhPuI/AAAAAAAA6gc/fj5ONpz0_c8/s640/Wizard-of-Oz-Emerald-City.jpg"
     },
     {
         "name": "Spooktown", 
-        "img_url": ""
+        "img_url": "http://ih0.redbubble.net/image.9110834.7441/flat,550x550,075,f.jpg"
     },
     {
         "name": "Middle Earth", 
-        "img_url": ""
+        "img_url": "http://beforeitsnews.com/mediadrop/uploads/2013/47/201868cad4e109d1856cb3596a3ff5add9021fb7.jpg"
     },
     {
         "name": "Narnia", 
-        "img_url": ""
+        "img_url": "http://img2.wikia.nocookie.net/__cb20131209151453/narnia/images/c/c5/The_chronicles_of_narnia-HD.jpg"
     },
     {
         "name": "Hogwarts", 
-        "img_url": ""
+        "img_url": "http://edushyster.com/wp-content/uploads/2013/06/hogwarts-harry-potter-30982898-1024-768.jpg"
     },
     {
         "name": "Neverland", 
-        "img_url": ""
+        "img_url": "http://musingsfrommommyland.files.wordpress.com/2013/02/peterpan-neverlandmap.jpg"
     },
     {
         "name": "Ancient Greece", 
-        "img_url": ""
+        "img_url": "http://www.crystalinks.com/parthenon1.jpg"
     },
     {
         "name": "Tel Aviv", 
-        "img_url": ""
+        "img_url": "http://www.thepinnaclelist.com/wp-content/uploads/2013/02/tayelet-the-vibrant-mediterranean-seaside-beach-promenade-tel-aviv-israel-920x673-1840-the-pinnacle-list-tpl.jpg"
     },
     {
         "name": "King's Landing", 
-        "img_url": ""
+        "img_url": "http://cdn0.lostateminor.com/wp-content/uploads/2014/01/Kings-Landing-990x500.jpg"
     }
   ]
 };
