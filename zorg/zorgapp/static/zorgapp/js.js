@@ -77,6 +77,19 @@ $('body').delegate('.worry-battle', 'click', function(e) {
   showNextCard();
 });
 
+$('body').on('contextmenu', function(e) {
+  e.preventDefault();
+  showAnalytics();
+});
+
+$('body').delegate('.analize-city', 'click', function(e) {
+  showRanking(sampleData);
+});
+
+$('body').delegate('.analize-topic', 'click', function(e) {
+  showRanking(sampleData);
+});
+
 var createWorryNode = function(side, data) {
   return createHalfNode(side, 'worry-battle', data);
 };
