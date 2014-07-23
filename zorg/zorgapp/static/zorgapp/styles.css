@@ -135,11 +135,15 @@ h1 {
   width: 100%;
   left: 0;
 }
-.compare-text {
-}
 
 .city-text {
   display: inline-block;
+}
+
+.city-line {
+  position: absolute;
+  width: 7px;
+  background-color: black;
 }
 
 .compare-city:nth-child(7n+1),

@@ -356,7 +356,7 @@ var createCompare = function(canvas, data, topic, key, left) {
     });
     c.lineTo(startX, num * stepHeight);
     c.closePath();
-    c.lineWidth = 20;
+    c.lineWidth = 0;
     c.stroke();
     c.clip();
     c.drawImage(img, 0, 0, canvas.width, canvas.height);
@@ -390,6 +390,7 @@ var showCompare = function(data) {
   var num = data.comparisons.length;
   var stepHeight = canvas.height / num;
   var cities = $('<div/>');
+  var lines = $('<div/>');
   data.comparisons.forEach(function(comparison, i) {
     var div = document.createElement('div');
     div.className = 'compare-city rank';
@@ -398,9 +399,21 @@ var showCompare = function(data) {
     div.style.top = (i * stepHeight) + 'px';
     div.style.height = stepHeight + 'px';
     
+    var percent = comparison.topic1_percent;
+    var line = document.createElement('div');
+    line.className = 'city-line';
+    line.style.position = "absolute";
+    line.style.left = (canvas.width * percent) + 'px';
+    line.style.top = (i * stepHeight) + 'px';
+    line.style.height = stepHeight + 'px';
+    line.style.width = '7px';
+    line.style.backgroundColor = 'black';
+    
     cities.append(div);
+    lines.append(line);
   });
   node.append(cities);
+  node.append(lines);
   
   showCard(node);
 };
