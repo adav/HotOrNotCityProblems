@@ -70,12 +70,16 @@ var setState = function(state) {
 };
 
 $('body').delegate('.worry-battle', 'click', function(e) {
-  var state = $(this).hasClass('left') ? STATES.leftWin : STATES.rightWin;
-  $(this).addClass('win');
-  setState(state);
+  makeWinner(this);
   sendResults();
   showNextCard();
 });
+
+var makeWinner = function(node) {
+  var state = $(node).hasClass('left') ? STATES.leftWin : STATES.rightWin;
+  $(node).addClass('win');
+  setState(state);
+};
 
 $('body').on('contextmenu', function(e) {
   e.preventDefault();
@@ -662,7 +666,14 @@ var sampleCustomBattle = [
   }
 ];
 
-var goToStep = function(step) {
+var winLeft = function() {
+  makeWinner($('.left'));
+};
+var winRight = function() {
+  makeWinner($('.right'));
+};
+
+var goToStep = function(step, foward) {
   switch(step) {
     case 1:
       showInitCard();
@@ -671,18 +682,30 @@ var goToStep = function(step) {
       showBattleCard(sampleBattle1);
       break;
     case 3:
+      if (foward) {
+        winLeft();
+      }
       showBattleCard(sampleBattle2);
       break;
     case 4:
+      if (foward) {
+        winRight();
+      }
       showBattleCard(sampleBattle3);
       break;
     case 5:
+      if (foward) {
+        winRight();
+      }
       showCreateWorryCard();
       break;
     case 6:
       showBattleCard(sampleCustomBattle);
       break;
     case 7:
+      if (foward) {
+        winLeft();
+      }
       showAnalytics();
       break;
     case 8:
@@ -702,7 +725,7 @@ $('body').on('keyup', function(e) {
   if (e.keyCode == 39) {
     e.preventDefault();
     step++;
-    goToStep(step);
+    goToStep(step, true);
   } else if (e.keyCode == 37) {
     e.preventDefault();
     step--;
