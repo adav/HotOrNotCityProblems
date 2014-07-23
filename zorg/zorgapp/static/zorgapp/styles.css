@@ -175,3 +175,22 @@ h1 {
 .rank:nth-child(7n+6) h1 {
   background-color: rgba(143, 0, 255, .5)
 }
+
+.tooltip-andrew{
+  pointer-events: none;
+  position: fixed;
+  bottom: -100px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 1;
+  transition: bottom 3s, opacity 3s;
+}
+
+.tooltip-move{
+  bottom: 25px;
+}
+
+.tooltip-vanish{
+  bottom: 100px;
+  opacity: 0;
+}
