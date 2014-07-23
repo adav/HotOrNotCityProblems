@@ -312,7 +312,7 @@ var createRank = function(topic, i) {
 };
 
 var showRanking = function(data) {
-  var node = createCard();
+  var node = createCard(undefined, 'ranking-card');
   node.append($('<h1/>', {
     class: 'ranking-title'
   }).html(data.title));

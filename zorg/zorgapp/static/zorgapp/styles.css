@@ -90,6 +90,7 @@ h1 {
 
 .leave {
   top: -100%;
+  overflow: hidden
 }
 
 .analize-city {
