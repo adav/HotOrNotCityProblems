@@ -83,7 +83,7 @@ $('body').on('contextmenu', function(e) {
 });
 
 $('body').delegate('.analize-city', 'click', function(e) {
-  //showRanking(sampleData);
+  //showRanking(sampleByCity);
   showLoadingCard();
   $.getJSON(getUrl('top'), function(data) {
     showRanking({
@@ -94,7 +94,7 @@ $('body').delegate('.analize-city', 'click', function(e) {
 });
 
 $('body').delegate('.analize-topic', 'click', function(e) {
-  showRanking(sampleData);
+  showRanking(sampleByTopic);
 });
 
 var createWorryNode = function(side, data) {
@@ -472,30 +472,38 @@ var showCompare = function(data) {
 
 var sampleCompare = {
   topic1: {
-    "id": 10, 
-    "name": "Corrupt Police", 
-    "img_url": "http://d1pvsnudg6kebv.cloudfront.net/wp-content/uploads/2012/05/Uttarakhand-Police.jpg"
+    "name": "Flat Word", 
+    "img_url": ""
   },
   topic2: {
-    "id": 6, 
-    "name": "Taxes", 
-    "img_url": "http://2.bp.blogspot.com/-E4WtTDSHh_w/TjdwWK-SifI/AAAAAAAAFlM/N56N6UuGFdA/s1600/smoking+uncle_sam_taxes.jpg"
+    "name": "Tyrants", 
+    "img_url": ""
   },
   comparisons: [
     {
-      city: 'Tel Aviv',
-      topic1_percent: '.25',
-      topic2_percent: '.75'
-    },
-    {
-      city: 'Chicago',
+      city: 'South Park',
       topic1_percent: '.75',
       topic2_percent: '.25'
     },
     {
-      city: 'London',
-      topic1_percent: '.65',
-      topic2_percent: '.35'
+      city: "King's Landing",
+      topic1_percent: '.10',
+      topic2_percent: '.90'
+    },
+    {
+      city: 'Tatoonie',
+      topic1_percent: '.35',
+      topic2_percent: '.65'
+    },
+    {
+      city: 'Bedrock',
+      topic1_percent: '.80',
+      topic2_percent: '.20'
+    },
+    {
+      city: 'Cartoonland',
+      topic1_percent: '1',
+      topic2_percent: '0'
     }
   ]  
 };
@@ -543,5 +551,51 @@ var sampleByCity = {
         "name": "Wizards", 
         "img_url": "http://images1.fanpop.com/images/photos/2000000/Wizard-of-Oz-Caps-the-wizard-of-oz-2028565-720-536.jpg"
     }
-]
+  ]
+};
+
+var sampleByTopic = {
+  title: 'Losing Your Head',
+  topics: [
+    {
+        "name": "King's Landing", 
+        "img_url": ""
+    },
+    {
+        "name": "Tatoonie", 
+        "img_url": ""
+    },
+    {
+        "name": "Gotham City", 
+        "img_url": ""
+    },
+    {
+        "name": "South Park", 
+        "img_url": ""
+    },
+    {
+        "name": "The Shire", 
+        "img_url": ""
+    },
+    {
+        "name": "Atlantis", 
+        "img_url": ""
+    },
+    {
+        "name": "Springfield", 
+        "img_url": ""
+    },
+    {
+        "name": "Bedrock", 
+        "img_url": ""
+    },
+    {
+        "name": "Asgard", 
+        "img_url": ""
+    },
+    {
+        "name": "Tel Aviv", 
+        "img_url": ""
+    }
+  ]
 };
