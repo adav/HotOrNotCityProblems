@@ -78,10 +78,11 @@ class BattleView(mixins.CreateModelMixin,
         
 
 default_count_top = 10;
+thresh_hold_min_views = 5;   
 class TopView(APIView):
     def get(self, request):
         #TODO filter out battles the user has done before
         topics = Topic.objects.all()    
-        new_topics = sorted(topics, key=lambda x: float(x.hits)/x.views if x.views > 0 else 0, reverse=True)
+        new_topics = sorted(topics, key=lambda x: float(x.hits)/x.views if x.views > thresh_hold_min_views else 0, reverse=True)
         serializer = TopicSerializer(new_topics[0:default_count_top-1], many=True)
         return Response(serializer.data)
