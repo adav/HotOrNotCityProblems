@@ -185,8 +185,8 @@ var sendResults = function() {
   };
   
   if (LATLONG) {
-    data['location_lat'] = LATLONG.latitude.toFixed(6),
-    data['location_long'] = LATLONG.longitude.toFixed(6),
+    data['location_lat'] = LATLONG.latitude.toFixed(6);
+    data['location_long'] = LATLONG.longitude.toFixed(6);
   }
   
   $.post(getUrl('battle/'), data);
